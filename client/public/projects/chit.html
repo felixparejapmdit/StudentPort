@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chit App UI</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; display: flex; height: 100vh; }
+        .sidebar { width: 300px; background: #ffffff; border-right: 1px solid #ddd; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; font-size: 1.5rem; font-weight: bold; border-bottom: 1px solid #eee; }
+        .chat-list { flex: 1; overflow-y: auto; }
+        .chat-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #f9f9f9; }
+        .chat-item:hover { background: #f0f2f5; }
+        .main-chat { flex: 1; display: flex; flex-direction: column; background: white; }
+        .chat-header { padding: 15px 25px; border-bottom: 1px solid #eee; font-weight: 600; }
+        .message-area { flex: 1; padding: 20px; overflow-y: auto; background: #e5ddd5; }
+        .msg { margin-bottom: 15px; padding: 10px 15px; border-radius: 10px; max-width: 70%; }
+        .sent { background: #dcf8c6; align-self: flex-end; margin-left: auto; }
+        .received { background: white; align-self: flex-start; }
+        .input-area { padding: 20px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">Chit Chat</div>
+        <div class="chat-list">
+            <div class="chat-item"><strong>Felix</strong><br><small>Hey, did you see the logs?</small></div>
+            <div class="chat-item"><strong>Joshua Villegas</strong><br><small>The system is live.</small></div>
+        </div>
+    </div>
+    <div class="main-chat">
+        <div class="chat-header">Felix</div>
+        <div class="message-area">
+            <div class="msg received">How is the new dashboard UI?</div>
+            <div class="msg sent">It looks clean! I added glassmorphism.</div>
+        </div>
+        <div class="input-area">
+            <input type="text" placeholder="Type a message...">
+            <button>Send</button>
+        </div>
+    </div>
+</body>
+</html>

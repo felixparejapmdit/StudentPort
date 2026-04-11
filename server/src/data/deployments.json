@@ -1,0 +1,123 @@
+[
+  {
+    "id": "1",
+    "projectName": "VID Quiz Application",
+    "studentName": "Mark Ace Rojas",
+    "mentorName": "Teo Ramos",
+    "deploymentUrl": "/projects/vid.html",
+    "date": "2026-04-10T12:00:00Z",
+    "updatedAt": "2026-04-10T12:00:00Z",
+    "description": "A simple app to store files online.",
+    "status": "in_progress",
+    "reviews": [
+      {
+        "id": "d125885c-7333-4996-8b8a-50e1e7c235a8",
+        "teacherName": "Mark Ace Rojas",
+        "comment": "test",
+        "imageUrl": null,
+        "status": "resolved",
+        "date": "2026-04-11T17:33:56.662Z"
+      },
+      {
+        "id": "2f0ec076-6686-4de8-8434-f9a71e264058",
+        "teacherName": "Admin",
+        "comment": "test 2",
+        "imageUrl": null,
+        "status": "pending",
+        "date": "2026-04-11T17:38:30.771Z"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "projectName": "Announcement App",
+    "studentName": "Nathanli Suralta",
+    "mentorName": "Zion Mills",
+    "deploymentUrl": "/projects/announcement.html",
+    "date": "2026-04-09T08:30:00Z",
+    "updatedAt": "2026-04-09T08:30:00Z",
+    "description": "An app to check local weather forecasts.",
+    "status": "active",
+    "reviews": []
+  },
+  {
+    "id": "b05c4a04-de09-42e0-9575-03ba7439a552",
+    "projectName": "E-Chit App",
+    "studentName": "MJ Catacutan",
+    "mentorName": "Felix Pareja",
+    "deploymentUrl": "/projects/chit.html",
+    "date": "2026-04-11T10:52:00.000Z",
+    "updatedAt": "2026-04-11T16:19:43.519Z",
+    "description": "Electronic chit management system.",
+    "status": "active",
+    "reviews": [
+      {
+        "id": "aadbec04-fdf2-4d3a-96fb-0e98d4cca95a",
+        "teacherName": "Felix Pareja",
+        "comment": "great UI/UX",
+        "date": "2026-04-11T16:18:13.008Z",
+        "editedAt": "2026-04-11T16:44:42.767Z",
+        "status": "resolved"
+      },
+      {
+        "id": "351c06ca-1a72-4947-9811-e5ea9c1e25b0",
+        "teacherName": "Felix Pareja",
+        "comment": "test upload image",
+        "imageUrl": "/uploads/1775927124600-727017273.png",
+        "date": "2026-04-11T17:05:24.647Z",
+        "editedAt": "2026-04-11T17:05:33.533Z",
+        "status": "resolved"
+      },
+      {
+        "id": "f74d9d4f-0cf6-4508-919a-a99542d10b88",
+        "teacherName": "Admin",
+        "comment": "test",
+        "imageUrl": null,
+        "status": "resolved",
+        "date": "2026-04-11T17:29:32.058Z"
+      },
+      {
+        "id": "b6d5f02d-15ee-4901-8b66-91cf958d56ca",
+        "teacherName": "Admin",
+        "comment": "fix the UI",
+        "imageUrl": null,
+        "status": "resolved",
+        "date": "2026-04-11T17:33:16.369Z"
+      },
+      {
+        "id": "627bd97a-3e59-412c-9178-682658168141",
+        "teacherName": "Admin",
+        "comment": "text",
+        "imageUrl": null,
+        "status": "resolved",
+        "date": "2026-04-11T17:38:48.438Z"
+      },
+      {
+        "id": "5e8110fd-737d-47a6-bb55-7db8e5c80ba0",
+        "teacherName": "Admin",
+        "comment": "fix alignment",
+        "imageUrl": null,
+        "status": "resolved",
+        "date": "2026-04-11T17:45:18.755Z",
+        "editedAt": "2026-04-11T17:45:28.966Z",
+        "replies": [
+          {
+            "id": "1b753a70-e15e-404e-9508-04029d204b08",
+            "name": "MJ Catacutan",
+            "text": "done",
+            "date": "2026-04-11T17:49:14.802Z"
+          }
+        ]
+      },
+      {
+        "id": "c73b2eab-0965-49c0-9ff9-63fd3229baf8",
+        "teacherName": "Admin",
+        "comment": "fix error",
+        "imageUrl": null,
+        "status": "pending",
+        "replies": [],
+        "date": "2026-04-11T17:56:59.943Z"
+      }
+    ]
+  }
+]

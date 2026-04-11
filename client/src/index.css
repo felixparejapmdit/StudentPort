@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen font-sans text-gray-100;
+    background-color: #0b141c;
+    background-image: 
+      radial-gradient(circle at 80% 20%, #224256 0%, transparent 40%),
+      radial-gradient(circle at 20% 80%, #0e1e2d 0%, transparent 40%),
+      linear-gradient(to bottom, #0d1923, #091118);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-xl bg-card border border-border rounded-[1.5rem] shadow-card transition-all duration-300;
+  }
+  
+  .glass-card:hover {
+    @apply bg-cardHover border-white/10;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-4 px-6 py-3.5 mx-4 my-1 text-textMuted hover:text-white rounded-xl transition-all duration-200 font-medium;
+  }
+
+  .sidebar-link.active {
+    @apply text-background bg-primary shadow-glow font-bold;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-background font-bold py-3 px-6 rounded-xl hover:bg-white transition-colors shadow-glow flex items-center justify-center gap-2;
+  }
+
+  .input-field {
+    @apply bg-[#0e1822] border border-white/10 rounded-xl p-3.5 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20;
+}

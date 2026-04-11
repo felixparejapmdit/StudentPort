@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements UI</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .announcement-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid #007bff; }
+        .date { font-size: 0.8rem; color: #888; }
+        h2 { margin: 10px 0; font-size: 1.25rem; color: #333; }
+        p { color: #666; line-height: 1.5; }
+        .tag { display: inline-block; padding: 4px 10px; background: #e7f3ff; color: #007bff; border-radius: 5px; font-size: 0.75rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Announcements</h1>
+            <button style="background:#007bff; color:white; border:none; padding:10px 15px; border-radius:5px; cursor:pointer;">+ New Post</button>
+        </div>
+        <div class="announcement-card">
+            <span class="tag">SYSTEM</span>
+            <span class="date">April 12, 2026</span>
+            <h2>Server Maintenance Notice</h2>
+            <p>The NAS server will be down for 2 hours tonight starting at 10 PM for Docker updates.</p>
+        </div>
+        <div class="announcement-card" style="border-left-color: #28a745;">
+            <span class="tag">HR</span>
+            <span class="date">April 11, 2026</span>
+            <h2>Holiday Schedule</h2>
+            <p>Please check the updated holiday list for the upcoming month in the Master Table.</p>
+        </div>
+    </div>
+</body>
+</html>
