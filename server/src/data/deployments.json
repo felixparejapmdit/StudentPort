@@ -38,7 +38,17 @@
     "updatedAt": "2026-04-09T08:30:00Z",
     "description": "An app to check local weather forecasts.",
     "status": "active",
-    "reviews": []
+    "reviews": [
+      {
+        "id": "e89d14fb-0b32-465d-9b21-4ca6e26b4e3e",
+        "teacherName": "Admin",
+        "comment": "enhance the UI, and observe proper margin and spacing",
+        "imageUrl": "/uploads/1775950485677-517860325.png",
+        "status": "resolved",
+        "replies": [],
+        "date": "2026-04-11T23:34:45.789Z"
+      }
+    ]
   },
   {
     "id": "b05c4a04-de09-42e0-9575-03ba7439a552",

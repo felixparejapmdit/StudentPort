@@ -1,5 +1,6 @@
 [
   { "id": "s1", "name": "Mark Ace Rojas", "email": "mark@school.edu", "section": "Grade 12 - STEM" },
   { "id": "s2", "name": "Nathanli Suralta", "email": "nathanli@school.edu", "section": "Grade 12 - STEM" },
-  { "id": "s3", "name": "MJ Catacutan", "email": "mj@school.edu", "section": "Grade 11 - ICT" }
+  { "id": "s3", "name": "MJ Catacutan", "email": "mj@school.edu", "section": "Grade 11 - ICT" },
+  { "id": "s4", "name": "Felix Pareja", "email": "felix@school.edu", "section": "Grade 12 - ICT" }
 ]
