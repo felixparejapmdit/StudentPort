@@ -1,10 +1,37 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchDeploymentById, addReview, updateReview, deleteReview, uploadImage, updateReviewStatus, addReply } from '../api';
-import { ChevronLeft, MessageSquare, Send, X, AlertCircle, ExternalLink, Edit2, Trash2, Check, Image as ImageIcon, Paperclip, Clock, CheckCircle2, Circle, Lock, User, Reply, CornerDownRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  fetchDeploymentById,
+  addReview,
+  updateReview,
+  deleteReview,
+  uploadImage,
+  updateReviewStatus,
+  addReply,
+} from "../api";
+import {
+  ChevronLeft,
+  MessageSquare,
+  Send,
+  X,
+  AlertCircle,
+  ExternalLink,
+  Edit2,
+  Trash2,
+  Check,
+  Image as ImageIcon,
+  Paperclip,
+  Clock,
+  CheckCircle2,
+  Circle,
+  Lock,
+  User,
+  Reply,
+  CornerDownRight,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -13,24 +40,33 @@ const ProjectView = () => {
 
   const [project, setProject] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [sending, setSending] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [editValue, setEditValue] = useState('');
+  const [editValue, setEditValue] = useState("");
   const [user, setUser] = useState(null);
 
   const [attachedImage, setAttachedImage] = useState(null);
   const [replyingId, setReplyingId] = useState(null);
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
 
   useEffect(() => {
     loadProject();
-    const stored = localStorage.getItem('user');
-    if (stored) setUser(JSON.parse(stored));
   }, [id]);
 
-  const isTeacher = user?.role === 'teacher';
-  const isStudent = user?.role === 'student';
+  const isTeacher = user?.role === "teacher";
+  const isStudent = user?.role === "student";
+
+  useEffect(() => {
+    if (project && isStudent && project.studentName !== user?.name) {
+      navigate("/", { replace: true });
+    }
+  }, [project, isStudent, user, navigate]);
 
   const loadProject = () => {
     fetchDeploymentById(id).then(setProject);
@@ -41,7 +77,7 @@ const ProjectView = () => {
     if (file) {
       setAttachedImage({
         file,
-        preview: URL.createObjectURL(file)
+        preview: URL.createObjectURL(file),
       });
     }
   };
@@ -49,11 +85,11 @@ const ProjectView = () => {
   const handlePaste = (e) => {
     const items = e.clipboardData.items;
     for (let i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf('image') !== -1) {
+      if (items[i].type.indexOf("image") !== -1) {
         const file = items[i].getAsFile();
         setAttachedImage({
           file,
-          preview: URL.createObjectURL(file)
+          preview: URL.createObjectURL(file),
         });
       }
     }
@@ -72,14 +108,14 @@ const ProjectView = () => {
       await addReview(id, {
         comment,
         imageUrl,
-        teacherName: user.name
+        teacherName: user.name,
       });
 
-      setComment('');
+      setComment("");
       setAttachedImage(null);
       loadProject();
     } catch (err) {
-      alert('Failed to send review');
+      alert("Failed to send review");
     } finally {
       setSending(false);
     }
@@ -91,13 +127,13 @@ const ProjectView = () => {
     try {
       await addReply(id, reviewId, {
         name: user.name,
-        text: replyText
+        text: replyText,
       });
-      setReplyText('');
+      setReplyText("");
       setReplyingId(null);
       loadProject();
     } catch (err) {
-      alert('Failed to send reply');
+      alert("Failed to send reply");
     } finally {
       setSending(false);
     }
@@ -110,17 +146,17 @@ const ProjectView = () => {
       setEditingId(null);
       loadProject();
     } catch (err) {
-      alert('Failed to update');
+      alert("Failed to update");
     }
   };
 
   const handleDelete = async (reviewId) => {
-    if (!confirm('Are you sure you want to delete this note?')) return;
+    if (!confirm("Are you sure you want to delete this note?")) return;
     try {
       await deleteReview(id, reviewId);
       loadProject();
     } catch (err) {
-      alert('Failed to delete');
+      alert("Failed to delete");
     }
   };
 
@@ -128,37 +164,46 @@ const ProjectView = () => {
     if (!isStudent) return; // Only students can toggle status
 
     const nextStatus = {
-      'pending': 'in_progress',
-      'in_progress': 'resolved',
-      'resolved': 'pending'
+      pending: "in_progress",
+      in_progress: "resolved",
+      resolved: "pending",
     }[currentStatus];
 
     try {
       await updateReviewStatus(id, reviewId, nextStatus);
       loadProject();
     } catch (err) {
-      alert('Failed to update status');
+      alert("Failed to update status");
     }
   };
 
-  if (!project) return <div className="p-20 text-center text-textMuted italic">Initializing secure link...</div>;
+  if (!project)
+    return (
+      <div className="p-20 text-center text-textMuted italic">
+        Initializing secure link...
+      </div>
+    );
 
-  const isExternal = project.deploymentUrl.startsWith('http');
-  const needsBreakout = isExternal && (
-    project.deploymentUrl.includes('github.com') ||
-    project.deploymentUrl.includes('google.com') ||
-    project.deploymentUrl.includes('facebook.com')
-  );
+  const isExternal = project.deploymentUrl.startsWith("http");
+  const needsBreakout =
+    isExternal &&
+    (project.deploymentUrl.includes("github.com") ||
+      project.deploymentUrl.includes("google.com") ||
+      project.deploymentUrl.includes("facebook.com"));
 
   const getHostname = () => {
     try {
-      return isExternal ? new URL(project.deploymentUrl).hostname : 'Local Project';
+      return isExternal
+        ? new URL(project.deploymentUrl).hostname
+        : "Local Project";
     } catch {
-      return 'Internal Source';
+      return "Internal Source";
     }
   };
 
-  const isNewVersion = project.reviews?.length > 0 && project.reviews.every(r => r.status === 'resolved');
+  const isNewVersion =
+    project.reviews?.length > 0 &&
+    project.reviews.every((r) => r.status === "resolved");
 
   return (
     <div className="fixed inset-0 bg-[#0a0f1d] flex flex-col z-[100] text-gray-100 font-sans">
@@ -166,7 +211,7 @@ const ProjectView = () => {
       <header className="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-[#0d1821]/80 backdrop-blur-2xl z-20">
         <div className="flex items-center gap-6">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="p-2 hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/10"
           >
             <ChevronLeft size={20} />
@@ -174,7 +219,9 @@ const ProjectView = () => {
 
           <div className="flex flex-col">
             <div className="flex items-center gap-3">
-              <h1 className="font-bold text-lg tracking-tight">{project.projectName}</h1>
+              <h1 className="font-bold text-lg tracking-tight">
+                {project.projectName}
+              </h1>
               {isNewVersion && (
                 <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-yellow-400 text-background text-[9px] font-black uppercase tracking-wider shadow-[0_0_10px_rgba(250,204,21,0.3)] animate-pulse">
                   <AlertCircle size={10} /> Fully Resolved
@@ -190,7 +237,8 @@ const ProjectView = () => {
                 rel="noreferrer"
                 className="text-primary hover:underline flex items-center gap-1"
               >
-                {project.deploymentUrl.slice(0, 40)}... <ExternalLink size={10} />
+                {project.deploymentUrl.slice(0, 40)}...{" "}
+                <ExternalLink size={10} />
               </a>
             </div>
           </div>
@@ -208,10 +256,11 @@ const ProjectView = () => {
           </a>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className={`px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all font-bold text-sm border ${sidebarOpen
-                ? 'bg-primary text-background border-primary shadow-glow'
-                : 'bg-white/5 text-white hover:bg-white/10 border-white/10'
-              }`}
+            className={`px-5 py-2.5 rounded-xl flex items-center gap-2 transition-all font-bold text-sm border ${
+              sidebarOpen
+                ? "bg-primary text-background border-primary shadow-glow"
+                : "bg-white/5 text-white hover:bg-white/10 border-white/10"
+            }`}
           >
             <MessageSquare size={18} />
             Review Mode
@@ -229,7 +278,8 @@ const ProjectView = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-4">Iframe Restricted</h3>
                 <p className="text-textMuted text-sm mb-8 leading-relaxed">
-                  This project host ({getHostname()}) refuses to be displayed inside another website for security reasons.
+                  This project host ({getHostname()}) refuses to be displayed
+                  inside another website for security reasons.
                 </p>
                 <a
                   href={project.deploymentUrl}
@@ -247,7 +297,9 @@ const ProjectView = () => {
               <div className="absolute inset-0 flex items-center justify-center -z-10 bg-[#0a0f1d]">
                 <div className="text-textMuted flex flex-col items-center gap-4">
                   <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-                  <p className="text-xs font-bold uppercase tracking-widest">Connecting to remote host...</p>
+                  <p className="text-xs font-bold uppercase tracking-widest">
+                    Connecting to remote host...
+                  </p>
                 </div>
               </div>
               <iframe
@@ -262,12 +314,16 @@ const ProjectView = () => {
         {/* Review Sidebar */}
         <aside
           className={`transition-all duration-500 ease-in-out border-l border-white/10 bg-[#0d1821]/90 backdrop-blur-3xl flex flex-col shadow-2xl relative z-30
-            ${sidebarOpen ? 'w-[450px]' : 'w-0 opacity-0 pointer-events-none translate-x-12'}`}
+            ${sidebarOpen ? "w-[450px]" : "w-0 opacity-0 pointer-events-none translate-x-12"}`}
         >
           <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
             <div>
-              <h2 className="font-black text-xs uppercase tracking-[0.2em] text-primary">Review Terminal</h2>
-              <p className="text-textMuted text-[10px] mt-1">LOGGED AS {user?.name.toUpperCase()}</p>
+              <h2 className="font-black text-xs uppercase tracking-[0.2em] text-primary">
+                Review Terminal
+              </h2>
+              <p className="text-textMuted text-[10px] mt-1">
+                LOGGED AS {user?.name.toUpperCase()}
+              </p>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -285,7 +341,7 @@ const ProjectView = () => {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     className={`bg-white/5 rounded-2xl overflow-hidden border transition-all shadow-lg group
-                      ${rev.status === 'resolved' ? 'border-green-500/30 opacity-60' : rev.status === 'in_progress' ? 'border-yellow-500/30' : 'border-white/10 group-hover:border-primary/30'}`}
+                      ${rev.status === "resolved" ? "border-green-500/30 opacity-60" : rev.status === "in_progress" ? "border-yellow-500/30" : "border-white/10 group-hover:border-primary/30"}`}
                   >
                     {rev.imageUrl && (
                       <div className="w-full border-b border-white/10 aspect-video bg-black/40 flex items-center justify-center overflow-hidden">
@@ -293,7 +349,9 @@ const ProjectView = () => {
                           src={`${API_BASE}${rev.imageUrl}`}
                           alt="Revision visual"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
-                          onClick={() => window.open(`${API_BASE}${rev.imageUrl}`, '_blank')}
+                          onClick={() =>
+                            window.open(`${API_BASE}${rev.imageUrl}`, "_blank")
+                          }
                         />
                       </div>
                     )}
@@ -303,14 +361,32 @@ const ProjectView = () => {
                         <div className="flex items-center gap-2">
                           {isStudent && (
                             <button
-                              onClick={() => handleStatusToggle(rev.id, rev.status || 'pending')}
-                              className={`p-1 rounded-md transition-all ${rev.status === 'resolved' ? 'text-green-400' : rev.status === 'in_progress' ? 'text-yellow-400' : 'text-textMuted hover:text-white'
-                                }`}
+                              onClick={() =>
+                                handleStatusToggle(
+                                  rev.id,
+                                  rev.status || "pending",
+                                )
+                              }
+                              className={`p-1 rounded-md transition-all ${
+                                rev.status === "resolved"
+                                  ? "text-green-400"
+                                  : rev.status === "in_progress"
+                                    ? "text-yellow-400"
+                                    : "text-textMuted hover:text-white"
+                              }`}
                             >
-                              {rev.status === 'resolved' ? <CheckCircle2 size={16} /> : rev.status === 'in_progress' ? <Clock size={16} /> : <Circle size={16} />}
+                              {rev.status === "resolved" ? (
+                                <CheckCircle2 size={16} />
+                              ) : rev.status === "in_progress" ? (
+                                <Clock size={16} />
+                              ) : (
+                                <Circle size={16} />
+                              )}
                             </button>
                           )}
-                          <p className="text-[10px] font-black text-primary uppercase tracking-widest">{rev.teacherName}</p>
+                          <p className="text-[10px] font-black text-primary uppercase tracking-widest">
+                            {rev.teacherName}
+                          </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <p className="text-[9px] text-textMuted font-medium italic">
@@ -318,7 +394,10 @@ const ProjectView = () => {
                           </p>
                           <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
-                              onClick={() => { setReplyingId(rev.id); setReplyText(''); }}
+                              onClick={() => {
+                                setReplyingId(rev.id);
+                                setReplyText("");
+                              }}
                               className="text-textMuted hover:text-white transition-colors"
                               title="Reply"
                             >
@@ -326,8 +405,21 @@ const ProjectView = () => {
                             </button>
                             {isTeacher && (
                               <>
-                                <button onClick={() => { setEditingId(rev.id); setEditValue(rev.comment); }} className="text-textMuted hover:text-primary transition-colors"><Edit2 size={12} /></button>
-                                <button onClick={() => handleDelete(rev.id)} className="text-textMuted hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
+                                <button
+                                  onClick={() => {
+                                    setEditingId(rev.id);
+                                    setEditValue(rev.comment);
+                                  }}
+                                  className="text-textMuted hover:text-primary transition-colors"
+                                >
+                                  <Edit2 size={12} />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(rev.id)}
+                                  className="text-textMuted hover:text-red-400 transition-colors"
+                                >
+                                  <Trash2 size={12} />
+                                </button>
                               </>
                             )}
                           </div>
@@ -339,15 +431,27 @@ const ProjectView = () => {
                           <textarea
                             className="input-field w-full text-sm min-h-[80px]"
                             value={editValue}
-                            onChange={e => setEditValue(e.target.value)}
+                            onChange={(e) => setEditValue(e.target.value)}
                           />
                           <div className="flex justify-end gap-2">
-                            <button onClick={() => setEditingId(null)} className="text-[10px] uppercase font-bold text-textMuted hover:text-white">Cancel</button>
-                            <button onClick={() => handleUpdate(rev.id)} className="flex items-center gap-1.5 bg-primary text-background px-3 py-1 rounded-lg text-[10px] uppercase font-black hover:shadow-glow transition-shadow"><Check size={12} /> Save</button>
+                            <button
+                              onClick={() => setEditingId(null)}
+                              className="text-[10px] uppercase font-bold text-textMuted hover:text-white"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => handleUpdate(rev.id)}
+                              className="flex items-center gap-1.5 bg-primary text-background px-3 py-1 rounded-lg text-[10px] uppercase font-black hover:shadow-glow transition-shadow"
+                            >
+                              <Check size={12} /> Save
+                            </button>
                           </div>
                         </div>
                       ) : (
-                        <p className={`text-sm leading-relaxed font-medium whitespace-pre-wrap ${rev.status === 'resolved' ? 'text-gray-500 line-through' : 'text-gray-200'}`}>
+                        <p
+                          className={`text-sm leading-relaxed font-medium whitespace-pre-wrap ${rev.status === "resolved" ? "text-gray-500 line-through" : "text-gray-200"}`}
+                        >
                           {rev.comment}
                         </p>
                       )}
@@ -356,20 +460,29 @@ const ProjectView = () => {
 
                   {/* Replies Rendering */}
                   <div className="ml-8 space-y-3">
-                    {rev.replies?.map(rep => (
+                    {rev.replies?.map((rep) => (
                       <motion.div
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                         key={rep.id}
                         className="bg-white/[0.03] border border-white/5 rounded-xl p-3 flex gap-3 group"
                       >
-                        <CornerDownRight size={14} className="text-textMuted shrink-0 mt-1" />
+                        <CornerDownRight
+                          size={14}
+                          className="text-textMuted shrink-0 mt-1"
+                        />
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-secondary">{rep.name}</span>
-                            <span className="text-[8px] text-textMuted/50 font-medium">{new Date(rep.date).toLocaleTimeString()}</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-secondary">
+                              {rep.name}
+                            </span>
+                            <span className="text-[8px] text-textMuted/50 font-medium">
+                              {new Date(rep.date).toLocaleTimeString()}
+                            </span>
                           </div>
-                          <p className="text-[11px] text-gray-300 leading-normal">{rep.text}</p>
+                          <p className="text-[11px] text-gray-300 leading-normal">
+                            {rep.text}
+                          </p>
                         </div>
                       </motion.div>
                     ))}
@@ -381,16 +494,24 @@ const ProjectView = () => {
                         className="bg-white/10 rounded-xl p-3 space-y-3 border border-primary/20"
                       >
                         <div className="flex justify-between items-center">
-                          <span className="text-[9px] font-black uppercase text-primary">Reply as {user.name}</span>
-                          <button onClick={() => setReplyingId(null)}><X size={12} /></button>
+                          <span className="text-[9px] font-black uppercase text-primary">
+                            Reply as {user.name}
+                          </span>
+                          <button onClick={() => setReplyingId(null)}>
+                            <X size={12} />
+                          </button>
                         </div>
                         <textarea
                           autoFocus
                           placeholder="Type your reply..."
                           className="w-full bg-transparent border-none text-[11px] focus:ring-0 p-0 resize-none min-h-[40px] text-white"
                           value={replyText}
-                          onChange={e => setReplyText(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendReply(rev.id))}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" &&
+                            !e.shiftKey &&
+                            (e.preventDefault(), handleSendReply(rev.id))
+                          }
                         />
                         <div className="flex justify-end">
                           <button
@@ -398,7 +519,7 @@ const ProjectView = () => {
                             disabled={!replyText.trim() || sending}
                             className="bg-primary text-background px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:shadow-glow disabled:opacity-30"
                           >
-                            {sending ? '...' : 'Reply'}
+                            {sending ? "..." : "Reply"}
                           </button>
                         </div>
                       </motion.div>
@@ -409,8 +530,12 @@ const ProjectView = () => {
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-center opacity-30 px-10">
                 <MessageSquare size={48} className="mb-4" />
-                <p className="text-xs font-bold uppercase tracking-widest">Empty Terminal</p>
-                <p className="text-[10px] mt-2 italic px-10">Waiting for logs.</p>
+                <p className="text-xs font-bold uppercase tracking-widest">
+                  Empty Terminal
+                </p>
+                <p className="text-[10px] mt-2 italic px-10">
+                  Waiting for logs.
+                </p>
               </div>
             )}
           </div>
@@ -426,7 +551,11 @@ const ProjectView = () => {
                     exit={{ opacity: 0, y: 10 }}
                     className="mb-4 relative rounded-xl overflow-hidden border border-primary/50 aspect-video group"
                   >
-                    <img src={attachedImage.preview} alt="Paste preview" className="w-full h-full object-cover" />
+                    <img
+                      src={attachedImage.preview}
+                      alt="Paste preview"
+                      className="w-full h-full object-cover"
+                    />
                     <button
                       onClick={() => setAttachedImage(null)}
                       className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg shadow-lg hover:scale-110 transition-transform"
@@ -443,8 +572,12 @@ const ProjectView = () => {
                   className="input-field w-full pr-14 pl-12 resize-none min-h-[80px] border-white/10 group-focus-within:border-primary/50 transition-all placeholder:text-textMuted/50 text-sm py-4"
                   placeholder="Create a new correction note..."
                   value={comment}
-                  onChange={e => setComment(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSendComment())}
+                  onChange={(e) => setComment(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" &&
+                    !e.shiftKey &&
+                    (e.preventDefault(), handleSendComment())
+                  }
                 />
 
                 <div className="absolute left-3 top-4 flex flex-col gap-3">

@@ -1,22 +1,38 @@
-version: '3.8'
-
 services:
   server:
     build: ./server
     ports:
-      - "5000:5000"
+      - "5001:5001"
     volumes:
       - ./server/src/data:/app/src/data
       - ./server/src/uploads:/app/src/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - NODE_ENV=production
-      - PORT=5000
+      - PORT=5001
+      - EXTERNAL_API_URL=http://host.docker.internal:5000/api/items
+      - ALLOW_LOCAL_FALLBACK=false
+    networks:
+      - appnet
 
   client:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        - VITE_API_URL=http://localhost:5001
     ports:
-      - "3000:80"
+      - "3001:80"
     depends_on:
       - server
     environment:
-      - VITE_API_URL=http://localhost:5000
+      - VITE_API_URL=http://localhost:5001
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

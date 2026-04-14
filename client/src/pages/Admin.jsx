@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createDeployment, fetchTeachers, fetchStudents } from '../api';
+import { createDeployment, fetchTeachers, fetchStudents, fetchProjects } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Rocket } from 'lucide-react';
 
@@ -7,10 +7,11 @@ const Admin = () => {
   const navigate = useNavigate();
   const [teachers, setTeachers] = useState([]);
   const [students, setStudents] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [formData, setFormData] = useState({
-    projectName: '',
-    studentName: '',
-    mentorName: '',
+    project_id: '',
+    student_id: '',
+    mentor_id: '',
     deploymentUrl: '',
     description: '',
   });
@@ -19,13 +20,19 @@ const Admin = () => {
     fetchTeachers().then(data => {
       setTeachers(data);
       if (data.length > 0) {
-        setFormData(prev => ({ ...prev, mentorName: data[0].name }));
+        setFormData(prev => ({ ...prev, mentor_id: data[0].id }));
       }
     });
     fetchStudents().then(data => {
       setStudents(data);
       if (data.length > 0) {
-        setFormData(prev => ({ ...prev, studentName: data[0].name }));
+        setFormData(prev => ({ ...prev, student_id: data[0].id }));
+      }
+    });
+    fetchProjects().then(data => {
+      setProjects(data);
+      if (data.length > 0) {
+        setFormData(prev => ({ ...prev, project_id: data[0].id }));
       }
     });
   }, []);
@@ -33,7 +40,12 @@ const Admin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createDeployment(formData);
+      await createDeployment({
+        ...formData,
+        project_id: Number(formData.project_id),
+        student_id: Number(formData.student_id),
+        mentor_id:  Number(formData.mentor_id),
+      });
       navigate('/');
     } catch (err) {
       alert(err.message);
@@ -57,26 +69,34 @@ const Admin = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
           <div className="grid grid-cols-2 gap-6">
+            {/* Project */}
             <div className="space-y-2">
-              <label className="text-xs font-bold text-gray-400 uppercase">Project Name</label>
-              <input
-                required
-                className="input-field w-full"
-                value={formData.projectName}
-                onChange={e => setFormData({ ...formData, projectName: e.target.value })}
-                placeholder="e.g. Enter Project Name"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-gray-400 uppercase">Student Name</label>
-              <select 
+              <label className="text-xs font-bold text-gray-400 uppercase">Project</label>
+              <select
                 required
                 className="input-field w-full bg-[#0a0f1d]"
-                value={formData.studentName}
-                onChange={e => setFormData({ ...formData, studentName: e.target.value })}
+                value={formData.project_id}
+                onChange={e => setFormData({ ...formData, project_id: e.target.value })}
               >
+                <option value="">Select project...</option>
+                {projects.map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Student */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-gray-400 uppercase">Student</label>
+              <select
+                required
+                className="input-field w-full bg-[#0a0f1d]"
+                value={formData.student_id}
+                onChange={e => setFormData({ ...formData, student_id: e.target.value })}
+              >
+                <option value="">Select student...</option>
                 {students.map(s => (
-                  <option key={s.id} value={s.name}>{s.name}</option>
+                  <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
               </select>
             </div>
@@ -99,11 +119,12 @@ const Admin = () => {
             <select
               required
               className="input-field w-full bg-[#0a0f1d]"
-              value={formData.mentorName}
-              onChange={e => setFormData({ ...formData, mentorName: e.target.value })}
+              value={formData.mentor_id}
+              onChange={e => setFormData({ ...formData, mentor_id: e.target.value })}
             >
+              <option value="">Select mentor...</option>
               {teachers.map(t => (
-                <option key={t.id} value={t.name}>{t.name}</option>
+                <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
           </div>

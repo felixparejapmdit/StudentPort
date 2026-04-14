@@ -1,9 +1,9 @@
 export class Deployment {
-  constructor({ id, projectName, studentName, mentorName, deploymentUrl, date, description, status = 'active' }) {
+  constructor({ id, project_id, student_id, mentor_id, deploymentUrl, date, description, status = 'active' }) {
     this.id = id;
-    this.projectName = projectName;
-    this.studentName = studentName;
-    this.mentorName = mentorName;
+    this.project_id = project_id;
+    this.student_id = student_id;
+    this.mentor_id = mentor_id;
     this.deploymentUrl = deploymentUrl;
     this.date = date || new Date().toISOString();
     this.description = description || '';
@@ -13,9 +13,9 @@ export class Deployment {
   toJSON() {
     return {
       id: this.id,
-      projectName: this.projectName,
-      studentName: this.studentName,
-      mentorName: this.mentorName,
+      project_id: this.project_id,
+      student_id: this.student_id,
+      mentor_id: this.mentor_id,
       deploymentUrl: this.deploymentUrl,
       date: this.date,
       description: this.description,

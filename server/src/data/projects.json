@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "VID App",
+    "status": "active",
+    "modules": ["Frontend", "Backend", "Auth"]
+  },
+  {
+    "id": 2,
+    "name": "Announcement App",
+    "status": "active",
+    "modules": ["UI", "Notifications", "Database"]
+  },
+  {
+    "id": 3,
+    "name": "Chit Management System",
+    "status": "active",
+    "modules": ["CRUD", "Reports", "Security"]
+  }
+]
