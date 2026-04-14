@@ -63,16 +63,14 @@ function App() {
           <Route path="*" element={
             <ProtectedRoute>
               <main className="flex-1 lg:ml-[280px] w-full min-h-screen p-4 md:p-8 lg:p-12 transition-all">
-                <div className="max-w-7xl mx-auto">
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/history" element={<ProjectHistory />} />
-                    <Route path="/manage" element={<ManageProjects />} />
-                    <Route path="/teachers" element={<TeachersPage />} />
-                    <Route path="/students" element={<StudentsPage />} />
-                  </Routes>
-                </div>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/history" element={<ProjectHistory />} />
+                  <Route path="/manage" element={<ManageProjects />} />
+                  <Route path="/teachers" element={<TeachersPage />} />
+                  <Route path="/students" element={<StudentsPage />} />
+                </Routes>
               </main>
             </ProtectedRoute>
           } />
