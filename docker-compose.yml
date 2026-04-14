@@ -20,13 +20,13 @@ services:
     build:
       context: ./client
       args:
-        - VITE_API_URL=http://localhost:5001
+        - VITE_API_URL=http://172.18.162.217:5001
     ports:
       - "3001:80"
     depends_on:
       - server
     environment:
-      - VITE_API_URL=http://localhost:5001
+      - VITE_API_URL=http://172.18.162.217:5001
     networks:
       - appnet
 
