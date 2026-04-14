@@ -193,7 +193,7 @@ app.get("/api/projects", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${port}`);
   console.log(
     `External API: ${process.env.EXTERNAL_API_URL || "http://172.18.162.217:5000/api/items"}`,
