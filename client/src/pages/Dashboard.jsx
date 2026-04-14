@@ -152,7 +152,7 @@ const Dashboard = () => {
       <header className="flex justify-between items-start">
         <div>
           <h1 className="text-5xl font-extrabold tracking-tight mb-2">
-            Project Dashboard1
+            Project Dashboard
           </h1>
           <p className="text-gray-400">
             {user?.role === "student"
