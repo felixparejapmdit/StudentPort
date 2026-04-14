@@ -3,14 +3,27 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    min-height: 100%;
+    height: 100%;
+  }
+
   body {
-    @apply min-h-screen font-sans text-gray-100;
+    @apply min-h-screen font-sans text-gray-100 overflow-x-hidden;
+    min-height: 100%;
+    height: 100%;
     background-color: #0b141c;
-    background-image: 
+    background-image:
       radial-gradient(circle at 80% 20%, #224256 0%, transparent 40%),
       radial-gradient(circle at 20% 80%, #0e1e2d 0%, transparent 40%),
       linear-gradient(to bottom, #0d1923, #091118);
     background-attachment: fixed;
+  }
+
+  #root {
+    min-height: 100vh;
+    height: 100%;
   }
 }
 
@@ -18,7 +31,7 @@
   .glass-card {
     @apply backdrop-blur-xl bg-card border border-border rounded-[1.5rem] shadow-card transition-all duration-300;
   }
-  
+
   .glass-card:hover {
     @apply bg-cardHover border-white/10;
   }

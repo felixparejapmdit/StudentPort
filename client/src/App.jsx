@@ -54,8 +54,10 @@ function App() {
         />
       )}
 
-      <main className="flex-1 lg:ml-[280px] w-full min-h-screen p-4 md:p-8 lg:p-12 transition-all">
-        <Outlet />
+      <main className="flex-1 lg:ml-[280px] w-full h-screen flex flex-col p-4 sm:p-6 lg:p-8 transition-all overflow-x-hidden overflow-y-auto">
+        <div className="w-full">
+          <Outlet />
+        </div>
       </main>
     </>
   );
