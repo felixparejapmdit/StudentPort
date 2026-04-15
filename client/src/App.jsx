@@ -37,7 +37,7 @@ function App() {
   };
 
   const AppLayout = ({ mobileMenuOpen, setMobileMenuOpen }) => (
-    <>
+    <div className="flex min-h-screen bg-background text-white">
       <button
         onClick={() => setMobileMenuOpen(true)}
         className="lg:hidden fixed top-6 left-6 z-[60] p-3 bg-white/5 border border-white/10 rounded-xl"
@@ -54,12 +54,12 @@ function App() {
         />
       )}
 
-      <main className="flex-1 lg:ml-[280px] w-full h-screen flex flex-col p-4 sm:p-6 lg:p-8 transition-all overflow-x-hidden overflow-y-auto">
-        <div className="w-full">
+      <main className="flex-1 lg:pl-[280px] h-screen transition-all overflow-y-auto bg-background/50">
+        <div className="p-4 sm:p-6 lg:p-8 w-full">
           <Outlet />
         </div>
       </main>
-    </>
+    </div>
   );
 
   const router = createBrowserRouter(

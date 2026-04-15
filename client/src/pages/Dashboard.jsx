@@ -333,7 +333,7 @@ const Dashboard = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
             {visibleProjects.length === 0 ? (
               <div className="glass-card p-8 text-center text-textMuted">
                 No projects available.
